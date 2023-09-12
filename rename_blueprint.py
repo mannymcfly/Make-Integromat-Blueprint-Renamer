@@ -3,6 +3,7 @@ import re
 import shutil
 import sys
 
+# Get downloads folder and target folder from text file
 def read_selected_paths_from_file():
     try:
         with open("selected_paths.txt", "r") as file:
@@ -15,6 +16,7 @@ def read_selected_paths_from_file():
         pass
     return None, None
 
+# Get Title from every blueprint file, check if it already exists in target folder, rename, and copy to new folder
 def main():
 
     download_folder_text, new_folder_text = read_selected_paths_from_file()
@@ -32,6 +34,7 @@ def main():
         if "blueprint" in f:
             old_file_name = os.path.join(downloads_folder, f)
             try:
+                # Find blueprint Title in JSON
                 with open(old_file_name) as x:
                     title = x.readlines()
                     pattern = r'"name": "([^"]+)"'
@@ -43,6 +46,7 @@ def main():
 
                         new_file_name = os.path.join(path, f'{finished_name}.json')
 
+                        # Only creates new file if a file with the same name does not exist in source folder
                         if os.path.exists(new_file_name) == False:
 
                             new_file =  shutil.copy(old_file_name, path)
